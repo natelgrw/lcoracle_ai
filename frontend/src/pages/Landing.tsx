@@ -40,10 +40,10 @@ const Landing: React.FC = () => {
   return (
     <div className="overflow-hidden bg-slate-50 min-h-screen relative font-sans">
 
-      {/* --- HERO SECTION --- */}
+      {/* Hero Section */}
       <section className="relative w-full min-h-[90vh] flex flex-col items-center pt-24 pb-0 overflow-hidden">
 
-        {/* Background: Peripheral Graph Nodes (Edges Only) */}
+        {/* Graph Node Background */}
         <PeripheralGraph />
 
         {/* Content Container */}
@@ -67,7 +67,7 @@ const Landing: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* CTA Button - Centered & Subtle Direction */}
+          {/* CTA Button */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const Landing: React.FC = () => {
               Get Started
             </a>
 
-            {/* Subtle bouncing arrow */}
+            {/* Subtle Downwards Arrow */}
             <motion.a
               href="#modules"
               animate={{ y: [0, 5, 0] }}
@@ -93,7 +93,6 @@ const Landing: React.FC = () => {
           </motion.div>
 
           {/* Central Chromatogram Animation */}
-          {/* Responsive spacing: mt-4 on small screens, mt-auto on larger */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -109,7 +108,7 @@ const Landing: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-slate-50 pointer-events-none z-20"></div>
       </section>
 
-      {/* --- MODULES SECTION --- */}
+      {/* Modules Section */}
       <section id="modules" className="py-16 relative bg-white scroll-mt-20 overflow-hidden">
         <InteractiveBackground />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -133,7 +132,7 @@ const Landing: React.FC = () => {
               <motion.div
                 key={module.name}
                 variants={itemVariants}
-                className="group relative bg-white rounded-[1.5rem] border border-slate-200 p-6 shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-300 hover:-translate-y-2 min-h-[260px] flex flex-col justify-between"
+                className="group relative bg-white rounded-[1.5rem] border border-slate-200 p-6 shadow-sm hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-300 hover:-translate-y-2 min-h-[260px] flex flex-col justify-between"
               >
                 <div>
                   <div className={`w-12 h-12 rounded-xl ${module.bg} flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-300 overflow-hidden`}>

@@ -23,11 +23,10 @@ const AmaxModule: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setBatchResults([]); // Clear batch if single run
+    setBatchResults([]);
 
     try {
       if (batchCompounds.length > 0) {
-        // Batch Processing
         const results: BatchResult[] = [];
         for (const smile of batchCompounds) {
           try {
@@ -39,12 +38,11 @@ const AmaxModule: React.FC = () => {
             });
           } catch (err) {
             console.error(`Failed for ${smile}`, err);
-            results.push({ compound: smile, solvent, lambda_max: 0 }); // Error marker
+            results.push({ compound: smile, solvent, lambda_max: 0 });
           }
         }
         setBatchResults(results);
       } else {
-        // Single Processing
         const response = await amaxApi.predict(compound, solvent);
         setResult(response.data.lambda_max);
       }
@@ -61,13 +59,12 @@ const AmaxModule: React.FC = () => {
     if (!file) return;
 
     setLoading(true);
-    setResult(null); // Clear single result
+    setResult(null);
     setBatchResults([]);
 
     try {
       const text = await file.text();
       const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-      // CSV no header, col 1 is SMILES
       const compounds = lines.map(line => line.split(',')[0].trim()).filter(s => s);
       setBatchCompounds(compounds);
     } catch (error) {
@@ -98,7 +95,6 @@ const AmaxModule: React.FC = () => {
     document.body.removeChild(a);
   };
 
-  // Spectrum gradient approximation
   const spectrumGradient = "bg-[linear-gradient(to_right,#9333ea,#2563eb,#38bdf8,#22c55e,#facc15,#f97316,#dc2626)]";
 
   return (
@@ -144,7 +140,7 @@ const AmaxModule: React.FC = () => {
                   onChange={(e) => setCompound(e.target.value)}
                   className="w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 border p-2"
                   placeholder="e.g. c1ccccc1"
-                  required={batchCompounds.length === 0 && !loading} // Required unless batch mode
+                  required={batchCompounds.length === 0 && !loading}
                   disabled={batchCompounds.length > 0}
                 />
               </div>
@@ -241,7 +237,6 @@ const AmaxModule: React.FC = () => {
             className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col min-h-[400px]"
           >
             {batchResults.length > 0 ? (
-              // Batch Results View
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-2xl font-bold text-gray-900">Batch Results</h3>
@@ -269,7 +264,6 @@ const AmaxModule: React.FC = () => {
                 </div>
               </div>
             ) : result !== null ? (
-              // Single Result View
               <div className="text-center h-full flex flex-col justify-center">
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
@@ -286,7 +280,7 @@ const AmaxModule: React.FC = () => {
                     </motion.span>
                     <span className="text-xl text-gray-500 block mt-1">nm</span>
                   </div>
-                  {/* Animated background ring */}
+                  {/* Animated Background Ring */}
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
@@ -301,7 +295,6 @@ const AmaxModule: React.FC = () => {
 
                 {/* Visual Spectrum Representation */}
                 <div className={`w-full h-12 rounded-full ${spectrumGradient} relative opacity-90 shadow-inner overflow-hidden`}>
-                  {/* Animated Marker */}
                   <motion.div
                     initial={{ left: "0%" }}
                     animate={{ left: `${Math.min(Math.max((result / 800) * 100, 0), 100)}%` }}
@@ -320,7 +313,7 @@ const AmaxModule: React.FC = () => {
                 </div>
               </div>
             ) : (
-              // Empty State
+              // empty results state
               <div className="text-center text-gray-400 flex flex-col items-center justify-center h-full">
                 <Activity className="w-16 h-16 mb-4 opacity-20" />
                 <p>Enter compound or upload CSV to predict λmax</p>

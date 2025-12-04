@@ -2,7 +2,7 @@
 specsummary.py
 
 Author: natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 Generates SpecSummary JSON files from ChemicalReaction and measurement manager objects.
 Uses score_aggregate.py to score all peaks and assign compounds.

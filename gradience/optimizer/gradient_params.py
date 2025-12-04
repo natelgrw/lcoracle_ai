@@ -3,7 +3,7 @@
 gradient_params.py
 
 Author: natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 This module provides functions to convert between the 10D gradient
 parameters and the 100-point gradient profile used by the ReTiNA_XGB1 

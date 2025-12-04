@@ -5,10 +5,9 @@ import retinaIcon from '../../assets/retina.png';
 import { retinaApi } from '../../api/client';
 import { motion } from 'framer-motion';
 
-// --- Types ---
 interface TableRow {
   name: string;
-  value: string; // Keep as string for input, parse on submit
+  value: string;
 }
 
 interface GradientRow {
@@ -21,21 +20,24 @@ interface BatchResult {
   retention_time: number;
 }
 
-// --- Helper Components ---
 const DynamicTable = ({
   headers,
   rows,
   onChange,
   onAdd,
   onRemove,
-  type = 'solvent' // 'solvent' | 'gradient'
+  type = 'solvent', // 'solvent' | 'gradient'
+  namePlaceholder = "e.g. C(=O)O",
+  valuePlaceholder = "0.0265"
 }: {
   headers: string[],
   rows: any[],
   onChange: (index: number, field: string, value: string) => void,
   onAdd: () => void,
   onRemove: (index: number) => void,
-  type?: 'solvent' | 'gradient'
+  type?: 'solvent' | 'gradient',
+  namePlaceholder?: string,
+  valuePlaceholder?: string
 }) => (
   <div className="border border-gray-200 rounded-xl overflow-hidden mb-4 shadow-sm">
     <table className="w-full text-sm">
@@ -56,7 +58,7 @@ const DynamicTable = ({
                 value={type === 'solvent' ? row.name : row.time}
                 onChange={(e) => onChange(idx, type === 'solvent' ? 'name' : 'time', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder={type === 'solvent' ? "e.g. C(=O)O" : "0.0265"}
+                placeholder={type === 'solvent' ? namePlaceholder : "0.0265"}
               />
             </td>
             <td className="p-2">
@@ -65,7 +67,7 @@ const DynamicTable = ({
                 value={type === 'solvent' ? row.value : row.pctB}
                 onChange={(e) => onChange(idx, type === 'solvent' ? 'value' : 'pctB', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder={type === 'solvent' ? "0.0265" : "5"}
+                placeholder={type === 'solvent' ? valuePlaceholder : "5"}
               />
             </td>
             <td className="p-2 pr-4 text-center">
@@ -372,6 +374,8 @@ const RetinaModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventASolvents, i, f, v)}
                         onAdd={() => handleAddRow(setSolventASolvents, 'solvent')}
                         onRemove={(i) => handleRemoveRow(setSolventASolvents, i)}
+                        namePlaceholder="e.g. O"
+                        valuePlaceholder="e.g. 95"
                       />
                     </div>
                     <div>
@@ -382,6 +386,8 @@ const RetinaModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventAAdditives, i, f, v)}
                         onAdd={() => handleAddRow(setSolventAAdditives, 'solvent')}
                         onRemove={(i) => handleRemoveRow(setSolventAAdditives, i)}
+                        namePlaceholder="e.g. C(=O)O"
+                        valuePlaceholder="e.g. 0.0265"
                       />
                     </div>
                   </div>
@@ -401,6 +407,8 @@ const RetinaModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventBSolvents, i, f, v)}
                         onAdd={() => handleAddRow(setSolventBSolvents, 'solvent')}
                         onRemove={(i) => handleRemoveRow(setSolventBSolvents, i)}
+                        namePlaceholder="e.g. O"
+                        valuePlaceholder="e.g. 95"
                       />
                     </div>
                     <div>
@@ -411,6 +419,8 @@ const RetinaModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventBAdditives, i, f, v)}
                         onAdd={() => handleAddRow(setSolventBAdditives, 'solvent')}
                         onRemove={(i) => handleRemoveRow(setSolventBAdditives, i)}
+                        namePlaceholder="e.g. C(=O)O"
+                        valuePlaceholder="e.g. 0.0265"
                       />
                     </div>
                   </div>
@@ -551,7 +561,7 @@ const RetinaModule: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col min-h-[400px]"
+            className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 flex flex-col min-h-[400px] h-fit"
           >
             {batchResults.length > 0 ? (
               // Batch Results View

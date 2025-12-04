@@ -44,7 +44,6 @@ const Navbar: React.FC = () => {
             </span>
           </Link>
 
-          {/* Desktop Nav - Trigger hamburger on screens smaller than LG */}
           <div className="hidden lg:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link

@@ -5,26 +5,28 @@ import gradienceIcon from '../../assets/gradience.png';
 import { gradienceApi } from '../../api/client';
 import { motion } from 'framer-motion';
 
-// --- Types (Reused from Retina/PeakProphet) ---
 interface TableRow {
   name: string;
   value: string;
 }
 
-// --- Helper Components (Reused) ---
 const DynamicTable = ({
   headers,
   rows,
   onChange,
   onAdd,
   onRemove,
+  namePlaceholder = "e.g. C(=O)O",
+  valuePlaceholder = "0.0265"
 }: {
   headers: string[],
   rows: any[],
   onChange: (index: number, field: string, value: string) => void,
   onAdd: () => void,
   onRemove: (index: number) => void,
-  type?: 'solvent'
+  type?: 'solvent',
+  namePlaceholder?: string,
+  valuePlaceholder?: string
 }) => (
   <div className="border border-gray-200 rounded-xl overflow-hidden mb-4 shadow-sm">
     <table className="w-full text-sm">
@@ -45,7 +47,7 @@ const DynamicTable = ({
                 value={row.name}
                 onChange={(e) => onChange(idx, 'name', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder="e.g. C(=O)O"
+                placeholder={namePlaceholder}
               />
             </td>
             <td className="p-2">
@@ -54,7 +56,7 @@ const DynamicTable = ({
                 value={row.value}
                 onChange={(e) => onChange(idx, 'value', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder="0.0265"
+                placeholder={valuePlaceholder}
               />
             </td>
             <td className="p-2 pr-4 text-center">
@@ -81,11 +83,10 @@ const DynamicTable = ({
 );
 
 const GradienceModule: React.FC = () => {
-  // --- State ---
   const [reactants, setReactants] = useState<string[]>(['']);
   const [solvent, setSolvent] = useState('');
 
-  // Method Parameters (Retina Style)
+  // method parameters
   const [solventASolvents, setSolventASolvents] = useState<TableRow[]>([{ name: 'O', value: '95.0' }, { name: 'CO', value: '5.0' }]);
   const [solventAAdditives, setSolventAAdditives] = useState<TableRow[]>([]);
 
@@ -104,7 +105,7 @@ const GradienceModule: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any | null>(null);
 
-  // --- Handlers ---
+  // handlers
   const addReactant = () => setReactants([...reactants, '']);
   const removeReactant = (index: number) => {
     const newReactants = [...reactants];
@@ -117,7 +118,7 @@ const GradienceModule: React.FC = () => {
     setReactants(newReactants);
   };
 
-  // Table Handlers
+  // table handlers
   const handleTableChange = (setter: React.Dispatch<React.SetStateAction<any[]>>, idx: number, field: string, val: string) => {
     setter(prev => {
       const newRows = [...prev];
@@ -136,7 +137,7 @@ const GradienceModule: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Construct Method Parameters JSON
+    // method parameters JSON
     const formatSolventDict = (rows: TableRow[]) => rows.reduce((acc, r) => {
       if (r.name && r.value) acc[r.name] = parseFloat(r.value);
       return acc;
@@ -169,7 +170,7 @@ const GradienceModule: React.FC = () => {
     }
   };
 
-  // Simple Gradient Chart Component
+  // gradient chart
   const GradientChart = ({ gradient }: { gradient: [number, number][] }) => {
     if (!gradient || gradient.length === 0) return null;
 
@@ -178,7 +179,6 @@ const GradienceModule: React.FC = () => {
     const width = 600;
     const height = 300;
 
-    // Scale functions
     const xScale = (x: number) => (x / maxX) * (width - 2 * padding) + padding;
     const yScale = (y: number) => height - padding - (y / 100) * (height - 2 * padding);
 
@@ -187,7 +187,7 @@ const GradienceModule: React.FC = () => {
     return (
       <div className="w-full overflow-x-auto flex justify-center">
         <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} className="min-w-[500px] max-w-[600px]">
-          {/* Grid lines */}
+          {/* Grid Lines */}
           {[0, 25, 50, 75, 100].map(y => (
             <g key={y}>
               <line
@@ -340,6 +340,8 @@ const GradienceModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventASolvents, i, f, v)}
                         onAdd={() => handleAddRow(setSolventASolvents)}
                         onRemove={(i) => handleRemoveRow(setSolventASolvents, i)}
+                        namePlaceholder="e.g. O"
+                        valuePlaceholder="e.g. 95"
                       />
                     </div>
                     <div>
@@ -350,6 +352,8 @@ const GradienceModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventAAdditives, i, f, v)}
                         onAdd={() => handleAddRow(setSolventAAdditives)}
                         onRemove={(i) => handleRemoveRow(setSolventAAdditives, i)}
+                        namePlaceholder="e.g. C(=O)O"
+                        valuePlaceholder="e.g. 0.0265"
                       />
                     </div>
                   </div>
@@ -369,6 +373,8 @@ const GradienceModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventBSolvents, i, f, v)}
                         onAdd={() => handleAddRow(setSolventBSolvents)}
                         onRemove={(i) => handleRemoveRow(setSolventBSolvents, i)}
+                        namePlaceholder="e.g. O"
+                        valuePlaceholder="e.g. 95"
                       />
                     </div>
                     <div>
@@ -379,6 +385,8 @@ const GradienceModule: React.FC = () => {
                         onChange={(i, f, v) => handleTableChange(setSolventBAdditives, i, f, v)}
                         onAdd={() => handleAddRow(setSolventBAdditives)}
                         onRemove={(i) => handleRemoveRow(setSolventBAdditives, i)}
+                        namePlaceholder="e.g. C(=O)O"
+                        valuePlaceholder="e.g. 0.0265"
                       />
                     </div>
                   </div>

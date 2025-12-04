@@ -38,18 +38,14 @@ const AskcosModule: React.FC = () => {
     }
   };
 
-  // Normalize inputs for filtering
   const inputSet = new Set([
     ...reactants.map(r => r.trim()),
     solvent.trim()
   ].filter(s => s !== ''));
 
-  // Filter results to exclude inputs
   const filteredResults = results.filter(product => {
-    // Check raw SMILES
     if (inputSet.has(product.smiles.trim())) return false;
 
-    // Check if it's a reaction string and the product part matches an input
     const productPart = product.smiles.split('>>').pop()?.trim();
     if (productPart && inputSet.has(productPart)) return false;
 
@@ -202,7 +198,6 @@ const AskcosModule: React.FC = () => {
                     <div key={idx} className="p-4 rounded-xl bg-gray-50 border border-gray-200 hover:border-purple-300 transition-colors">
                       <div className="flex justify-between items-start">
                         <div>
-                          {/* Ensure only product part is shown if it's a reaction string */}
                           <p className="font-mono text-sm text-purple-600 break-all">
                             {product.smiles.split('>>').pop()}
                           </p>

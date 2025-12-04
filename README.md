@@ -6,7 +6,7 @@ The platform unifies five powerful predictive modules: ASKCOS, AMAX, ReTiNA, Pea
 
 Current Version: **1.0.0**
 
-![LCOracle.ai Screenshot](./frontend/src/assets/lcoracleai.png)
+![LCOracle.ai Screenshot](./frontend/src/assets/lcoracle.png)
 
 ## 🧿 Installation & Usage
 
@@ -35,7 +35,7 @@ LCOracle.ai is containerized with Docker for easy deployment.
 
 ## Featured Modules
 
-### 🏔️ ASKCOS
+### 🔍 ASKCOS
 **Automated Compound Synthesis Optimization**
 
 ASKCOS is a powerful tool for predicting the most likely reaction products for a given set of reactants. It uses a combination of machine learning models to predict the most likely reaction products for a given set of reactants.
@@ -59,7 +59,7 @@ ASKCOS is a powerful tool for predicting the most likely reaction products for a
 
 PeakProphet streamlines compound identification by mapping detected LC-MS peaks to likely reaction products. It combines:
 - **Product Prediction**: Via MIT ASKCOS software.
-- **Property Prediction**: Retention times (ReTiNA), $\lambda_{max}$ (AMAX), and MS adducts.
+- **Property Prediction**: Retention times (ReTiNA), λ<sub>max</sub> (AMAX), and MS adducts.
 - **Smart Scoring**: A weighted scoring system to rank candidates for each peak.
 - **Optimal Assignment**: Hungarian algorithm for global 1-to-1 peak assignment.
 
@@ -78,7 +78,7 @@ Documentation for Gradience can be found [here](https://github.com/natelgrw/grad
 ### ⚡ AMAX
 **Absorption Maxima Prediction**
 
-The AMAX module predicts the UV-Vis $\lambda_{max}$ for organic molecules in various solvents. Prediction models are from the AMAX model series.
+The AMAX module predicts the UV-Vis λ<sub>max</sub> for organic molecules in various solvents. Prediction models are from the AMAX model series.
 
 Model Used: **AMAX_XGB1**
 

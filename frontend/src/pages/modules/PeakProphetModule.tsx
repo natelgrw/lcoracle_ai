@@ -5,7 +5,6 @@ import peakProphetIcon from '../../assets/peakprophet.png';
 import { peakProphetApi } from '../../api/client';
 import { motion } from 'framer-motion';
 
-// --- Types (Reused from Retina) ---
 interface TableRow {
   name: string;
   value: string;
@@ -16,21 +15,24 @@ interface GradientRow {
   pctB: string;
 }
 
-// --- Helper Components (Reused from Retina) ---
 const DynamicTable = ({
   headers,
   rows,
   onChange,
   onAdd,
   onRemove,
-  type = 'solvent'
+  type = 'solvent',
+  namePlaceholder = "e.g. C(=O)O",
+  valuePlaceholder = "0.0265"
 }: {
   headers: string[],
   rows: any[],
   onChange: (index: number, field: string, value: string) => void,
   onAdd: () => void,
   onRemove: (index: number) => void,
-  type?: 'solvent' | 'gradient'
+  type?: 'solvent' | 'gradient',
+  namePlaceholder?: string,
+  valuePlaceholder?: string
 }) => (
   <div className="border border-gray-200 rounded-xl overflow-hidden mb-4 shadow-sm">
     <table className="w-full text-sm">
@@ -51,7 +53,7 @@ const DynamicTable = ({
                 value={type === 'solvent' ? row.name : row.time}
                 onChange={(e) => onChange(idx, type === 'solvent' ? 'name' : 'time', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder={type === 'solvent' ? "e.g. C(=O)O" : "0.0265"}
+                placeholder={type === 'solvent' ? namePlaceholder : "0.0265"}
               />
             </td>
             <td className="p-2">
@@ -60,7 +62,7 @@ const DynamicTable = ({
                 value={type === 'solvent' ? row.value : row.pctB}
                 onChange={(e) => onChange(idx, type === 'solvent' ? 'value' : 'pctB', e.target.value)}
                 className="w-full px-3 py-2 rounded-lg border-gray-300 border shadow-sm focus:border-purple-500 focus:ring-purple-500 focus:outline-none transition-all text-sm"
-                placeholder={type === 'solvent' ? "0.0265" : "5"}
+                placeholder={type === 'solvent' ? valuePlaceholder : "5"}
               />
             </td>
             <td className="p-2 pr-4 text-center">
@@ -87,16 +89,14 @@ const DynamicTable = ({
 );
 
 const PeakProphetModule: React.FC = () => {
-  // --- State ---
-  // Reaction Setup
   const [reactants, setReactants] = useState<string[]>(['']);
   const [solvent, setSolvent] = useState('');
 
-  // Files
+  // file inputs
   const [msFile, setMsFile] = useState<File | null>(null);
   const [uvFile, setUvFile] = useState<File | null>(null);
 
-  // Method Parameters (Retina)
+  // method parameters
   const [solventASolvents, setSolventASolvents] = useState<TableRow[]>([{ name: 'O', value: '95.0' }, { name: 'CO', value: '5.0' }]);
   const [solventAAdditives, setSolventAAdditives] = useState<TableRow[]>([]);
 
@@ -117,13 +117,11 @@ const PeakProphetModule: React.FC = () => {
   const [flowRate, setFlowRate] = useState('1.0');
   const [temp, setTemp] = useState('40.0');
 
-  // Processing & Results
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any | null>(null);
 
-  // --- Handlers ---
 
-  // Reactant Handlers
+  // reactant handlers
   const addReactant = () => setReactants([...reactants, '']);
   const removeReactant = (index: number) => {
     const newReactants = [...reactants];
@@ -136,7 +134,7 @@ const PeakProphetModule: React.FC = () => {
     setReactants(newReactants);
   };
 
-  // Table Handlers
+  // table handlers
   const handleTableChange = (setter: React.Dispatch<React.SetStateAction<any[]>>, idx: number, field: string, val: string) => {
     setter(prev => {
       const newRows = [...prev];
@@ -151,7 +149,7 @@ const PeakProphetModule: React.FC = () => {
     setter(prev => prev.filter((_, i) => i !== idx));
   };
 
-  // File Handlers
+  // file handlers
   const handleMsFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) setMsFile(e.target.files[0]);
   };
@@ -159,7 +157,6 @@ const PeakProphetModule: React.FC = () => {
     if (e.target.files?.[0]) setUvFile(e.target.files[0]);
   };
 
-  // Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!msFile) {
@@ -173,7 +170,7 @@ const PeakProphetModule: React.FC = () => {
 
     setLoading(true);
 
-    // Construct Method Parameters JSON
+    // method parameters JSON
     const formatSolventDict = (rows: TableRow[]) => rows.reduce((acc, r) => {
       if (r.name && r.value) acc[r.name] = parseFloat(r.value);
       return acc;
@@ -366,17 +363,17 @@ const PeakProphetModule: React.FC = () => {
                 {/* Solvent Front A */}
                 <div className="mb-6">
                   <h4 className="text-sm font-semibold text-gray-700 mb-2">Solvent Front A</h4>
-                  <DynamicTable headers={['Solvent', 'Conc (%)']} rows={solventASolvents} onChange={(i, f, v) => handleTableChange(setSolventASolvents, i, f, v)} onAdd={() => handleAddRow(setSolventASolvents, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventASolvents, i)} />
+                  <DynamicTable headers={['Solvent', 'Conc (%)']} rows={solventASolvents} onChange={(i, f, v) => handleTableChange(setSolventASolvents, i, f, v)} onAdd={() => handleAddRow(setSolventASolvents, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventASolvents, i)} namePlaceholder="e.g. O" valuePlaceholder="e.g. 95" />
                   <div className="mt-2"></div>
-                  <DynamicTable headers={['Additive', 'Conc (M)']} rows={solventAAdditives} onChange={(i, f, v) => handleTableChange(setSolventAAdditives, i, f, v)} onAdd={() => handleAddRow(setSolventAAdditives, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventAAdditives, i)} />
+                  <DynamicTable headers={['Additive', 'Conc (M)']} rows={solventAAdditives} onChange={(i, f, v) => handleTableChange(setSolventAAdditives, i, f, v)} onAdd={() => handleAddRow(setSolventAAdditives, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventAAdditives, i)} namePlaceholder="e.g. C(=O)O" valuePlaceholder="e.g. 0.0265" />
                 </div>
 
                 {/* Solvent Front B */}
                 <div className="mb-6">
                   <h4 className="text-sm font-semibold text-gray-700 mb-2">Solvent Front B</h4>
-                  <DynamicTable headers={['Solvent', 'Conc (%)']} rows={solventBSolvents} onChange={(i, f, v) => handleTableChange(setSolventBSolvents, i, f, v)} onAdd={() => handleAddRow(setSolventBSolvents, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventBSolvents, i)} />
+                  <DynamicTable headers={['Solvent', 'Conc (%)']} rows={solventBSolvents} onChange={(i, f, v) => handleTableChange(setSolventBSolvents, i, f, v)} onAdd={() => handleAddRow(setSolventBSolvents, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventBSolvents, i)} namePlaceholder="e.g. O" valuePlaceholder="e.g. 95" />
                   <div className="mt-2"></div>
-                  <DynamicTable headers={['Additive', 'Conc (M)']} rows={solventBAdditives} onChange={(i, f, v) => handleTableChange(setSolventBAdditives, i, f, v)} onAdd={() => handleAddRow(setSolventBAdditives, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventBAdditives, i)} />
+                  <DynamicTable headers={['Additive', 'Conc (M)']} rows={solventBAdditives} onChange={(i, f, v) => handleTableChange(setSolventBAdditives, i, f, v)} onAdd={() => handleAddRow(setSolventBAdditives, 'solvent')} onRemove={(i) => handleRemoveRow(setSolventBAdditives, i)} namePlaceholder="e.g. C(=O)O" valuePlaceholder="e.g. 0.0265" />
                 </div>
 
                 {/* Gradient */}

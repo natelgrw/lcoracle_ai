@@ -2,7 +2,7 @@
 turbo.py
 
 Author: natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 Trust region bayesian optimization (TuRBO) implementation to
 explore the parameter space of a gradient.

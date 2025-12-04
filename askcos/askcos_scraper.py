@@ -2,7 +2,7 @@
 askcos_scraper.py
 
 Author: natelgrw
-Last Edited: 11/10/2025
+Last Edited: 12/04/2025
 
 This script contains a function that scrapes the ASKCOS forward prediction
 results for a given list of reactants and solvent.

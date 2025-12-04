@@ -2,7 +2,7 @@
 rxn_classes.py
 
 Author: natelgrw
-Last Edited: 11/10/2025
+Last Edited: 12/04/2025
 
 This module provides classes to represent a chemical reaction 
 and its predicted products.
@@ -14,10 +14,7 @@ and a class for chemical reactions (ChemicalReaction).
 from typing import List, Optional, Dict, Tuple, Union
 import asyncio
 
-# Try multiple import paths to support different execution contexts:
-# 1. Relative import (when used as a package)
-# 2. Absolute from predictions dir (Jupyter notebooks in predictions/)
-# 3. Absolute from project root (scripts like run_pipeline.py)
+
 try:
     from ..product_pred.askcos_scraper import scrape_askcos
     from ..rt_pred.pred_rt import predict_retention_time_from_smiles
@@ -49,7 +46,6 @@ class PredictedProduct:
         self.probability = probability
         self.mol_weight = mol_weight
 
-        # Dict[str, Tuple[float, float]]: {adduct_name: (mass, probability)}
         self.ms_values = ms_values
 
         # retention time in seconds

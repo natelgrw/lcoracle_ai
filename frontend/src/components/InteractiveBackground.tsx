@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 const InteractiveBackground: React.FC = () => {
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-            {/* Blob 2: Pink-ish */}
+            {/* Blob 1: Pink-ish */}
             <motion.div className="absolute top-1/3 right-1/4">
                 <motion.div
                     animate={{
@@ -14,7 +14,7 @@ const InteractiveBackground: React.FC = () => {
                         opacity: [0.4, 0.5, 0.3],
                     }}
                     transition={{
-                        duration: 10, // Faster
+                        duration: 10,
                         repeat: Infinity,
                         ease: "easeInOut",
                         delay: 1
@@ -23,7 +23,7 @@ const InteractiveBackground: React.FC = () => {
                 />
             </motion.div>
 
-            {/* Blob 3: Indigo */}
+            {/* Blob 2: Indigo */}
             <motion.div className="absolute bottom-1/4 left-1/3">
                 <motion.div
                     animate={{
@@ -33,7 +33,7 @@ const InteractiveBackground: React.FC = () => {
                         opacity: [0.3, 0.5, 0.3],
                     }}
                     transition={{
-                        duration: 10, // Faster
+                        duration: 10,
                         repeat: Infinity,
                         ease: "easeInOut",
                         delay: 1

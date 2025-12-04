@@ -1,3 +1,10 @@
+Version: **1.0.1**
+
+Date Released: **12/04/2025**
+
+- Refactored code with better documentation and organization
+- Several web app UI/UX improvements
+
 Version: **1.0.0**
 
 Date Released: **12/03/2025**

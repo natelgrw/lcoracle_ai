@@ -2,7 +2,7 @@
 score_lmax.py
 
 Author: natelgrw
-Last Edited: 11/10/2025
+Last Edited: 12/04/2025
 
 Lambda max scoring utilities. Uses exponential similarity on 
 lambda max difference (nm) with a chosen sigma.

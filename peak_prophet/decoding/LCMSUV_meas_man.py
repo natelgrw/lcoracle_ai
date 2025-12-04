@@ -2,7 +2,7 @@
 LCMSUV_meas_man.py
 
 Author: @natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 LC-MS/UV-Vis Measurement Manager: Combines LC-MS and UV-Vis data to provide
 comprehensive peak information including MS spectra and lambda max values.

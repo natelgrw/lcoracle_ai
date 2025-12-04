@@ -3,7 +3,7 @@
 ms_pred.py
 
 Author: natelgrw
-Last Edited: 11/10/2025
+Last Edited: 12/04/2025
 
 This script contains functions and information that predicts 
 mass spectrometry adducts for a list of SMILES strings.

@@ -12,17 +12,17 @@ interface LabelData {
 
 const ChromatogramAnimation: React.FC = () => {
   const [visiblePeakCount, setVisiblePeakCount] = useState(4);
-  const [scaleFactor, setScaleFactor] = useState(1); // Multiplier for mobile/tablet
+  const [scaleFactor, setScaleFactor] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 640) {
         setVisiblePeakCount(2);
-        setScaleFactor(1.4); // 40% larger on mobile
+        setScaleFactor(1.4);
       } else if (width < 1024) {
         setVisiblePeakCount(3);
-        setScaleFactor(1.25); // 25% larger on tablet
+        setScaleFactor(1.25);
       } else {
         setVisiblePeakCount(4);
         setScaleFactor(1);
@@ -33,7 +33,7 @@ const ChromatogramAnimation: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Taller Peaks - Scaled by device
+  // peak heights scaled by device
   const allPeaks = [
     { id: 1, height: 180, width: 30, delay: 0 },
     { id: 2, height: 140, width: 25, delay: 2 },
@@ -46,11 +46,12 @@ const ChromatogramAnimation: React.FC = () => {
     return {
       ...p,
       x: Math.round(step * (i + 1)),
-      height: p.height * scaleFactor, // Apply scaling
+      height: p.height * scaleFactor,
       width: p.width * scaleFactor
     };
   });
 
+  // possible labels for peaks
   const possibleLabels = [
     { main: "Peak A", sub: "RT 4.2m" },
     { main: "Impurity", sub: "m/z 145.2" },
@@ -91,6 +92,7 @@ const ChromatogramAnimation: React.FC = () => {
     { main: "Adduct 2", sub: "[M+Na]+" },
   ];
 
+  // colors for peak labels
   const colors = [
     { text: "#2563eb", bg: "#eff6ff", stroke: "#60a5fa", accent: "#3b82f6" }, // Blue
     { text: "#9333ea", bg: "#faf5ff", stroke: "#c084fc", accent: "#a855f7" }, // Purple
@@ -119,7 +121,7 @@ const ChromatogramAnimation: React.FC = () => {
 
   useEffect(() => {
     const cycleDuration = 12000;
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     allPeaks.forEach(peak => {
       const initialDelay = (peak.delay * 1000) + 10000;
@@ -135,12 +137,6 @@ const ChromatogramAnimation: React.FC = () => {
 
     return () => timers.forEach(t => clearTimeout(t as any));
   }, []);
-
-  // If peaks scale up, they might need more vertical room.
-  // Default yBase is 350. If tallest peak (260 * 1.4 = 364) + label, it will clip.
-  // We need to push the baseline down on mobile.
-  // Height 400 -> maybe 500 on mobile? Or adjust viewBox?
-  // Easier: Adjust yBase and viewBox dynamically.
 
   const yBase = 350 + (scaleFactor > 1 ? 50 : 0);
   const viewBoxHeight = 400 + (scaleFactor > 1 ? 100 : 0);
@@ -177,7 +173,7 @@ const ChromatogramAnimation: React.FC = () => {
           fill="none"
         />
 
-        {peaks.map((peak, index) => (
+        {peaks.map((peak) => (
           <PeakComponent
             key={peak.id}
             peak={peak}

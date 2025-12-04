@@ -2,7 +2,7 @@
 LCMS_meas_man.py
 
 Author: @natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 LC-MS Measurement Manager: Stores peak information including apexes, boundaries, 
 local maxima, and MS spectra for each peak. Contains functions for easy data processing

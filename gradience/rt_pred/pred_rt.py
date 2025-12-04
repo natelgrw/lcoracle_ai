@@ -3,7 +3,7 @@
 pred_rt.py
 
 Author: natelgrw
-Last Edited: 11/15/2025
+Last Edited: 12/04/2025
 
 This script predicts retention time values using the ReTiNA_XGB1 XGBoost
 model. All retention time predictions are returned in seconds.
