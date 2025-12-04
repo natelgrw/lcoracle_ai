@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
             <p className="mt-6 text-xs text-slate-500">
-              v1.0.0 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
+              v1.0.1 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
             </p>
           </div>
         </div>
