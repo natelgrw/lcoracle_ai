@@ -14,10 +14,13 @@ import tempfile
 import json
 import logging
 from typing import List, Optional, Dict, Tuple, Union, Any
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Body, Request, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+import requests
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'peak_prophet'))
@@ -34,15 +37,29 @@ try:
 except ImportError as e:
     logging.error(f"Failed to import modules: {e}")
 
+# initialize rate limiter
+enable_rate_limits = os.getenv("ENABLE_RATE_LIMITS", "False").lower() == "true"
+limiter = Limiter(key_func=get_remote_address, enabled=enable_rate_limits)
 app = FastAPI(title="LCOracle.ai API", description="API for LCOracle.ai integrating 5 LC-MS modules")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# security to restrict CORS
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://lcoracle-ai.vercel.app",
+    "https://lcoracle.ai",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # ===== Model Inputs ===== #
 
@@ -82,7 +99,8 @@ async def root():
 
 
 @app.post("/amax/predict")
-async def amax_predict(input_data: AmaxInput):
+@limiter.limit("20/minute")
+async def amax_predict(request: Request, input_data: AmaxInput):
     """
     Predicts UV-Vis absorption maxima for a compound-solvent combination.
     """
@@ -94,7 +112,8 @@ async def amax_predict(input_data: AmaxInput):
 
 
 @app.post("/askcos/predict")
-async def askcos_predict(input_data: AskcosInput):
+@limiter.limit("10/minute")
+async def askcos_predict(request: Request, input_data: AskcosInput):
     """
     Predicts reaction products using an ASKCOS scraper.
     """
@@ -106,7 +125,8 @@ async def askcos_predict(input_data: AskcosInput):
 
 
 @app.post("/retina/predict")
-async def retina_predict(input_data: RetinaInput):
+@limiter.limit("20/minute")
+async def retina_predict(request: Request, input_data: RetinaInput):
     """
     Predicts retention time for a compound using ReTiNA.
     """
@@ -125,7 +145,8 @@ async def retina_predict(input_data: RetinaInput):
 
 
 @app.post("/gradience/optimize")
-async def gradience_optimize(input_data: GradienceInput):
+@limiter.limit("5/day")
+async def gradience_optimize(request: Request, input_data: GradienceInput):
     """
     Utilizer the Gradience module to optimize LC-MS gradient.
     """
@@ -163,17 +184,20 @@ async def gradience_optimize(input_data: GradienceInput):
 
 
 @app.post("/peakprophet/predict")
+@limiter.limit("5/day")
 async def peakprophet_predict(
+    request: Request,
     reactants: str = Form(...),
     solvent: str = Form(...),
     ms_file: UploadFile = File(...),
     uv_file: Optional[UploadFile] = File(None),
-    method_params: Optional[str] = Form(None)
+    method_params: Optional[str] = Form(None),
 ):
     """
     Predicts and assigns peaks from uploaded LC-MS file.
     Reactants and solvent should be JSON strings or simple strings.
     """
+
     temp_ms_path = None
     temp_uv_path = None
     try:

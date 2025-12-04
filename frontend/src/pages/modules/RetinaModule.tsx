@@ -26,7 +26,7 @@ const DynamicTable = ({
   onChange,
   onAdd,
   onRemove,
-  type = 'solvent', // 'solvent' | 'gradient'
+  type = 'solvent',
   namePlaceholder = "e.g. C(=O)O",
   valuePlaceholder = "0.0265"
 }: {
@@ -94,12 +94,9 @@ const DynamicTable = ({
 );
 
 const RetinaModule: React.FC = () => {
-  // --- State ---
-  // Input
   const [compound, setCompound] = useState('CCO');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Method Parameters
   const [solventASolvents, setSolventASolvents] = useState<TableRow[]>([{ name: 'O', value: '95.0' }, { name: 'CO', value: '5.0' }]);
   const [solventAAdditives, setSolventAAdditives] = useState<TableRow[]>([]);
 
@@ -277,7 +274,7 @@ const RetinaModule: React.FC = () => {
         icon={retinaIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-16"
+        iconOffset="-mt-9"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -305,7 +302,7 @@ const RetinaModule: React.FC = () => {
                     />
                   </div>
 
-                  {/* File Upload / Batch Indicator */}
+                  {/* File Upload & Batch Indicator */}
                   <div className="relative py-4">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-gray-200"></div>

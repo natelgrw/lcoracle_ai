@@ -1,3 +1,11 @@
+Version: **1.0.2**
+
+Date Released: **12/04/2025**
+
+- SlowAPI rate limiting and CORS security implementation for web deployment
+- Option to download Gradience optimization results
+- Several web app UI/UX improvements
+
 Version: **1.0.1**
 
 Date Released: **12/04/2025**

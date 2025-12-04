@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Plus, Trash2, ArrowRight } from 'lucide-react';
+import { TrendingUp, Plus, Trash2, ArrowRight, Download } from 'lucide-react';
 import ModuleHeader from '../../components/ModuleHeader';
 import gradienceIcon from '../../assets/gradience.png';
 import { gradienceApi } from '../../api/client';
@@ -231,11 +231,21 @@ const GradienceModule: React.FC = () => {
           ))}
 
           {/* Labels */}
-          <text x={width / 2} y={height - 10} textAnchor="middle" fontSize="12" fill="#4b5563" fontWeight="bold">Time (min)</text>
-          <text x={25} y={height / 2} textAnchor="middle" transform={`rotate(-90, 25, ${height / 2})`} fontSize="12" fill="#4b5563" fontWeight="bold">% Solvent B</text>
         </svg>
       </div>
     );
+  };
+
+  const downloadJSON = () => {
+    if (!result) return;
+    const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'gradience_optimization.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   return (
@@ -493,6 +503,7 @@ const GradienceModule: React.FC = () => {
 
               </div>
 
+
               <button
                 type="submit"
                 disabled={loading}
@@ -522,7 +533,18 @@ const GradienceModule: React.FC = () => {
             className="space-y-6"
           >
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 min-h-[400px] flex flex-col">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Optimized Gradient</h2>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Optimized Gradient</h2>
+                {result && (
+                  <button
+                    onClick={downloadJSON}
+                    className="p-2 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors shadow-sm"
+                    title="Download JSON Summary"
+                  >
+                    <Download className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
 
               {result ? (
                 <div>
@@ -574,7 +596,7 @@ const GradienceModule: React.FC = () => {
           </motion.div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

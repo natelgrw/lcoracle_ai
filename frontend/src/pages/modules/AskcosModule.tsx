@@ -93,7 +93,7 @@ const AskcosModule: React.FC = () => {
         icon={askcosIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-8"
+        iconOffset="-mt-9"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

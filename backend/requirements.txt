@@ -21,3 +21,4 @@ requests
 mocca2
 pyteomics
 chemprop
+slowapi

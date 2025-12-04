@@ -4,7 +4,7 @@ LCOracle.ai is a comprehensive, AI-powered web application designed to revolutio
 
 The platform unifies five powerful predictive modules: ASKCOS, AMAX, ReTiNA, PeakProphet, and Gradience, into a single, cohesive ecosystem for end-to-end method development and data analysis.
 
-Current Version: **1.0.0**
+Current Version: **1.0.2**
 
 ![LCOracle.ai Screenshot](./frontend/src/assets/lcoracle.png)
 
