@@ -33,12 +33,11 @@ LCOracle.ai is containerized with Docker for easy deployment.
    - **Frontend**: Access the dashboard at `http://localhost:5173`
    - **Backend**: API documentation available at `http://localhost:8000/docs`
 
-## Featured Modules
+## 🔍 Featured Modules
 
-### 🔍 ASKCOS
-**Automated Compound Synthesis Optimization**
+### ASKCOS
 
-ASKCOS is a powerful tool for predicting the most likely reaction products for a given set of reactants. It uses a combination of machine learning models to predict the most likely reaction products for a given set of reactants.
+The ASKCOS module uses MIT ASKCOS software to predict the most likely reaction products for a given set of reactants.
 
 ```
 @article{askcos2025,
@@ -54,44 +53,77 @@ ASKCOS is a powerful tool for predicting the most likely reaction products for a
 }
 ```
 
-### 🏔️ PeakProphet
-**Automated Compound-Peak Matching**
-
-PeakProphet streamlines compound identification by mapping detected LC-MS peaks to likely reaction products. It combines:
-- **Product Prediction**: Via MIT ASKCOS software.
-- **Property Prediction**: Retention times (ReTiNA), λ<sub>max</sub> (AMAX), and MS adducts.
-- **Smart Scoring**: A weighted scoring system to rank candidates for each peak.
-- **Optimal Assignment**: Hungarian algorithm for global 1-to-1 peak assignment.
-
-Documentation for PeakProphet can be found [here](https://github.com/natelgrw/peakprophet).
-
-### 📈 Gradience
-**Intelligent Gradient Optimization**
-
-Gradience takes the guesswork out of method development. Using Trust-Based Bayesian Optimization (TuRBO), it automatically designs LC gradients to maximize peak separation for your specific mixture.
-- **Input**: Reactants, solvent, and column configuration.
-- **Output**: An optimized gradient profile and simulated chromatogram.
-- **Engine**: Powered by the `gradience` Python package.
-
-Documentation for Gradience can be found [here](https://github.com/natelgrw/gradience).
-
-### ⚡ AMAX
-**Absorption Maxima Prediction**
+### AMAX
 
 The AMAX module predicts the UV-Vis λ<sub>max</sub> for organic molecules in various solvents. Prediction models are from the AMAX model series.
 
 Model Used: **AMAX_XGB1**
 
+```
+@modelcollection{amaxmodels,
+  title={AMAX-Models: Machine Learning Models for Molecular Absorption Wavelength Prediction},
+  author={Leung, Nathan},
+  institution={Coley Research Group @ MIT}
+  year={2025},
+  howpublished={\url{https://huggingface.co/natelgrw/AMAX-Models}},
+}
+```
+
 Documentation for AMAX models can be found [here](https://github.com/natelgrw/amax).
 
-### 👁️ ReTiNA
-**Retention Time Prediction**
+### ReTiNA
 
 The ReTiNA module predicts elution times for compounds under specific LC-MS conditions.
 
 Model Used: **ReTiNA_XG B1**
 
+```
+@modelcollection{retinamodels,
+  title={ReTiNA-Models: Machine Learning Models for LC-MS Retention Time Prediction},
+  author={Leung, Nathan},
+  institution={Coley Research Group @ MIT}
+  year={2025},
+  howpublished={\url{https://huggingface.co/natelgrw/ReTiNA-Models}},
+}
+```
+
 Documentation for ReTiNA models can be found [here](https://github.com/natelgrw/retina).
+
+### PeakProphet
+
+PeakProphet uses product prediction, property prediction, smart scoring, and optimal assignment algorithms to streamline compound identification by mapping detected LC-MS peaks to likely reaction products.
+
+Version Used: **1.0.1**
+
+```
+@software{peakprophet,
+  title = {PeakProphet: Automated Compound-Peak Matching for LC-MS},
+  author = {Leung, Nathan},
+  institution={Coley Research Group @ MIT},
+  year={2025},
+  url={https://github.com/natelgrw/peak_prophet}
+}
+```
+
+Documentation for PeakProphet can be found [here](https://github.com/natelgrw/peakprophet).
+
+### Gradience
+
+Gradience takes the guesswork out of method development. Using Trust-Based Bayesian Optimization (TuRBO), it automatically designs LC gradients to maximize peak separation for your specific mixture.
+
+Version Used: **1.0.0**
+
+```
+@software{gradience,
+  title={Gradience: Automated LC-MS Gradient Optimization},
+  author={Leung, Nathan},
+  institution={Coley Research Group @ MIT},
+  year={2025},
+  url={https://github.com/natelgrw/gradience}
+}
+```
+
+Documentation for Gradience can be found [here](https://github.com/natelgrw/gradience).
 
 ## 🪄 Citation
 
