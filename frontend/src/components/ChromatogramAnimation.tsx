@@ -19,10 +19,10 @@ const ChromatogramAnimation: React.FC = () => {
       const width = window.innerWidth;
       if (width < 640) {
         setVisiblePeakCount(2);
-        setScaleFactor(1.4);
+        setScaleFactor(2.1);
       } else if (width < 1024) {
         setVisiblePeakCount(3);
-        setScaleFactor(1.25);
+        setScaleFactor(1.7);
       } else {
         setVisiblePeakCount(4);
         setScaleFactor(1);

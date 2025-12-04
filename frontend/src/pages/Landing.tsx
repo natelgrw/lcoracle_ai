@@ -56,7 +56,7 @@ const Landing: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="max-w-4xl mx-auto mb-6"
           >
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-4 drop-shadow-sm leading-tight">
+            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-4 drop-shadow-sm leading-tight">
               AI Driven <br />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
                 LC-MS Chemistry
@@ -113,7 +113,7 @@ const Landing: React.FC = () => {
         <InteractiveBackground />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
               Research Modules
             </h2>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
