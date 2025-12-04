@@ -7,9 +7,12 @@ import PeakProphetModule from './pages/modules/PeakProphetModule';
 import GradienceModule from './pages/modules/GradienceModule';
 import Layout from './components/Layout';
 
+import ScrollToTop from './components/ScrollToTop';
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<Landing />} />
