@@ -73,8 +73,8 @@ const FloatingGraph: React.FC = () => {
 
       // constant motion of nodes
       if (speed < 0.5) {
-        vx *= 1.05;
-        vy *= 1.05;
+        vx *= 2.5;
+        vy *= 2.5;
       }
 
       return { ...node, x, y, vx, vy };

@@ -50,8 +50,8 @@ const PeripheralGraph: React.FC = () => {
           x: zone.xMin + Math.random() * (zone.xMax - zone.xMin),
           y: zone.yMin + Math.random() * (zone.yMax - zone.yMin),
           // speed of nodes
-          vx: (Math.random() - 0.5) * 0.05,
-          vy: (Math.random() - 0.5) * 0.05,
+          vx: (Math.random() - 0.5) * 0.0075,
+          vy: (Math.random() - 0.5) * 0.0075,
           size: 2 + Math.random() * 3,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
@@ -88,8 +88,8 @@ const PeripheralGraph: React.FC = () => {
         if (dist < mouseRadius) {
           // force of repulsion
           const force = (mouseRadius - dist) / mouseRadius;
-          node.vx += (dx / dist) * force * 0.5;
-          node.vy += (dy / dist) * force * 0.5;
+          node.vx += (dx / dist) * force * 0.2;
+          node.vy += (dy / dist) * force * 0.2;
         }
 
         const maxV = 0.1;
