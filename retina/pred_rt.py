@@ -18,11 +18,11 @@ import xgboost as xgb
 from scipy.interpolate import interp1d
 
 try:
-    from ..utils.calc_descriptors import calculate_156_descriptors
+    from ..peak_prophet.predictions.utils.calc_descriptors import calculate_156_descriptors
 except ImportError:
     import sys
     import os
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
     from peak_prophet.predictions.utils.calc_descriptors import calculate_156_descriptors
 
 logging.basicConfig(level=logging.INFO)

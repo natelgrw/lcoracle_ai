@@ -12,8 +12,9 @@ from typing import List, Dict, Tuple, Optional
 import sys
 import os
 
-from gradience.rt_pred.pred_rt import predict_retention_time_from_list
-from gradience.optimizer.gradient_params import params_to_gradient
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from rt_pred.pred_rt import predict_retention_time_from_list
+from optimizer.gradient_params import params_to_gradient
 
 
 # ===== Functions For Objective Function ===== #

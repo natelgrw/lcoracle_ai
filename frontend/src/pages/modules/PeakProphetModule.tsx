@@ -532,7 +532,7 @@ const PeakProphetModule: React.FC = () => {
                           <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${peak.optimal_compound ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}`}>
                             {peak.optimal_compound ? 'Assigned' : 'Unassigned'}
                           </div>
-                          <div className="text-xs text-gray-400 mt-1">Score: {(peak.score || 0).toFixed(2)}</div>
+
                         </div>
                       </div>
 

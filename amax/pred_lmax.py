@@ -18,7 +18,7 @@ import pandas as pd
 import xgboost as xgb
 
 try:
-    from ..utils.calc_descriptors import calculate_156_descriptors
+    from ..peak_prophet.predictions.utils.calc_descriptors import calculate_156_descriptors
 except ImportError:
     import sys
     import os

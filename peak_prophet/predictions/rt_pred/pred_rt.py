@@ -23,7 +23,7 @@ except ImportError:
     import sys
     import os
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
-    from peak_prophet.predictions.utils.calc_descriptors import calculate_156_descriptors
+    from predictions.utils.calc_descriptors import calculate_156_descriptors
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

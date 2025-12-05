@@ -18,11 +18,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(__file__))
-from gradience.product_pred.askcos_scraper import scrape_askcos
-from gradience.optimizer.turbo import TuRBO
-from gradience.optimizer.gradient_params import params_to_gradient, get_bounds
-from gradience.optimizer.objective import evaluate_gradient
-from gradience.optimizer.gradient_params import params_to_gradient
+from product_pred.askcos_scraper import scrape_askcos
+from optimizer.turbo import TuRBO
+from optimizer.gradient_params import params_to_gradient, get_bounds
+from optimizer.objective import evaluate_gradient
+from optimizer.gradient_params import params_to_gradient
 
 
 

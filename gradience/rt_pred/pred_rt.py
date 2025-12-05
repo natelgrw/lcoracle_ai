@@ -24,7 +24,7 @@ except ImportError:
     import sys
     import os
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-    from gradience.rt_pred.calc_descriptors import calculate_156_descriptors
+    from rt_pred.calc_descriptors import calculate_156_descriptors
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
