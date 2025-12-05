@@ -40,7 +40,11 @@ except ImportError as e:
 # initialize rate limiter
 enable_rate_limits = os.getenv("ENABLE_RATE_LIMITS", "False").lower() == "true"
 limiter = Limiter(key_func=get_remote_address, enabled=enable_rate_limits)
-app = FastAPI(title="LCOracle.ai API", description="API for LCOracle.ai integrating 5 LC-MS modules")
+app = FastAPI(
+    title="LCOracle.ai API",
+    description="API for LCOracle.ai integrating 5 LC-MS modules",
+    root_path=os.getenv("ROOT_PATH", "")
+)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -277,4 +281,7 @@ async def peakprophet_predict(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import os
+    
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
