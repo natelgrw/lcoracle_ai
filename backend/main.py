@@ -54,6 +54,8 @@ origins = [
     "http://127.0.0.1:5173",
     "https://lcoracle-ai.vercel.app",
     "https://lcoracle.ai",
+    "https://www.lcoracle.dev",
+    "https://lcoracle.dev",
 ]
 
 app.add_middleware(
