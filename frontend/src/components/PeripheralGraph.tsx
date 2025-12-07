@@ -50,8 +50,8 @@ const PeripheralGraph: React.FC = () => {
           x: zone.xMin + Math.random() * (zone.xMax - zone.xMin),
           y: zone.yMin + Math.random() * (zone.yMax - zone.yMin),
           // speed of nodes
-          vx: (Math.random() - 0.5) * 0.0075,
-          vy: (Math.random() - 0.5) * 0.0075,
+          vx: (Math.random() - 0.5) * (width < 768 ? 0.30 : 0.15),
+          vy: (Math.random() - 0.5) * (width < 768 ? 0.30 : 0.15),
           size: 2 + Math.random() * 3,
           color: colors[Math.floor(Math.random() * colors.length)],
         });
@@ -171,6 +171,7 @@ const PeripheralGraph: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth < 1024) return; // Disable interaction on mobile/tablet
       const rect = canvas.getBoundingClientRect();
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PeripheralGraph from '../components/PeripheralGraph';
 import ChromatogramAnimation from '../components/ChromatogramAnimation';
@@ -81,15 +81,7 @@ const Landing: React.FC = () => {
               Get Started
             </a>
 
-            {/* Subtle Downwards Arrow */}
-            <motion.a
-              href="#modules"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-blue-400/50 hover:text-blue-500 transition-colors mt-2 cursor-pointer"
-            >
-              <ChevronDown className="w-6 h-6" />
-            </motion.a>
+
           </motion.div>
 
           {/* Central Chromatogram Animation */}
@@ -97,7 +89,7 @@ const Landing: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="w-full max-w-5xl relative mt-4 md:mt-auto"
+            className="w-full max-w-5xl relative mt-20 md:mt-auto"
           >
             <ChromatogramAnimation />
           </motion.div>
@@ -109,7 +101,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* Modules Section */}
-      <section id="modules" className="py-16 relative bg-white scroll-mt-20 overflow-hidden">
+      <section id="modules" className="py-16 relative bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 scroll-mt-20 overflow-hidden">
         <InteractiveBackground />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">

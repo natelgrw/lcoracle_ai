@@ -269,7 +269,7 @@ const GradienceModule: React.FC = () => {
         icon={gradienceIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-16"
+        iconOffset="md:-mt-16"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -587,7 +587,7 @@ const GradienceModule: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+                <div className="flex-1 flex flex-col items-center justify-center text-gray-400 text-center">
                   <TrendingUp className="w-16 h-16 mb-4 opacity-20" />
                   <p>Enter reaction details to optimize gradient</p>
                 </div>

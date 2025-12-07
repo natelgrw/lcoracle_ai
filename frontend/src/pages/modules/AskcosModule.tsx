@@ -93,7 +93,7 @@ const AskcosModule: React.FC = () => {
         icon={askcosIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-9"
+        iconOffset="md:-mt-16"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -214,7 +214,7 @@ const AskcosModule: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+                <div className="flex-1 flex flex-col items-center justify-center text-gray-400 text-center">
                   <Search className="w-16 h-16 mb-4 opacity-20" />
                   <p>Run a prediction to see results</p>
                 </div>

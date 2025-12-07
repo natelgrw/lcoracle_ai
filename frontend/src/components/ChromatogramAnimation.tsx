@@ -13,20 +13,37 @@ interface LabelData {
 const ChromatogramAnimation: React.FC = () => {
   const [visiblePeakCount, setVisiblePeakCount] = useState(4);
   const [scaleFactor, setScaleFactor] = useState(1);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [labelScale, setLabelScale] = useState(1);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
+      setWindowWidth(width);
       if (width < 640) {
-        setVisiblePeakCount(2);
-        setScaleFactor(2.1);
+        setVisiblePeakCount(1);
+        setScaleFactor(2.5);
+        setIsTablet(false);
+        setIsMobile(true);
       } else if (width < 1024) {
         setVisiblePeakCount(3);
         setScaleFactor(1.7);
+        setIsTablet(true);
+        setIsMobile(false);
       } else {
         setVisiblePeakCount(4);
         setScaleFactor(1);
+        setIsTablet(false);
+        setIsMobile(false);
       }
+
+      // Calculate label scale to maintain constant physical size
+      // SVG viewBox width is 1000. Rendered width is min(windowWidth, 1024).
+      // We scale up the label elements when the SVG is scaled down.
+      const renderedWidth = Math.min(width, 1024);
+      setLabelScale(1000 / renderedWidth);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -43,10 +60,18 @@ const ChromatogramAnimation: React.FC = () => {
 
   const peaks = allPeaks.slice(0, visiblePeakCount).map((p, i) => {
     const step = 1000 / (visiblePeakCount + 1);
+    // Dynamic height calculation for mobile to maintain 30px gap
+    // Formula derived from: PeakHeight = 400 - (60000 / Width)
+    // This ensures the label top is ~50px above SVG top (30px below button).
+    // For width <= 640px, we apply a linear boost: +50px height for every 30px width decrease.
+    // Base boost at 640px is 40px.
+    const boost = windowWidth <= 640 ? 40 + ((50 / 30) * (640 - windowWidth)) : 0;
+    const mobileHeight = 400 - (60000 / windowWidth) + boost;
+
     return {
       ...p,
       x: Math.round(step * (i + 1)),
-      height: p.height * scaleFactor,
+      height: isMobile ? mobileHeight : p.height * scaleFactor * (isTablet ? 0.6 : 1),
       width: p.width * scaleFactor
     };
   });
@@ -180,6 +205,8 @@ const ChromatogramAnimation: React.FC = () => {
             labelData={labels[peak.id] || getRandomLabel()}
             getPeakPath={getPeakPath}
             yBase={yBase}
+            labelScale={labelScale}
+            windowWidth={windowWidth}
           />
         ))}
       </svg>
@@ -192,12 +219,27 @@ const PeakComponent: React.FC<{
   labelData: LabelData;
   getPeakPath: (x: number, h: number, w: number) => string;
   yBase: number;
-}> = ({ peak, labelData, getPeakPath, yBase }) => {
+  labelScale: number;
+  windowWidth: number;
+}> = ({ peak, labelData, getPeakPath, yBase, labelScale, windowWidth }) => {
 
   const path = getPeakPath(peak.x, peak.height, peak.width);
-  const cardWidth = 140;
-  const cardHeight = 44;
-  const cardYOffset = yBase - peak.height - 65;
+  // Base dimensions (desktop)
+  const baseWidth = 140;
+  const baseHeight = 44;
+  const baseFontSizeMain = 14;
+  const baseFontSizeSub = 11;
+  const baseGap = 65;
+
+  // Increase connector gap slightly for very small screens (<= 550px)
+  const connectorOffset = windowWidth <= 550 ? 12 : 10;
+
+  // Scaled dimensions
+  const cardWidth = baseWidth * labelScale;
+  const cardHeight = baseHeight * labelScale;
+  const cardYOffset = yBase - peak.height - (baseGap * labelScale);
+  const fontSizeMain = baseFontSizeMain * labelScale;
+  const fontSizeSub = baseFontSizeSub * labelScale;
 
   return (
     <g>
@@ -249,7 +291,7 @@ const PeakComponent: React.FC<{
         {/* Connector */}
         <line
           x1={peak.x}
-          y1={yBase - peak.height - 10}
+          y1={yBase - peak.height - connectorOffset}
           x2={peak.x}
           y2={cardYOffset + cardHeight}
           stroke={labelData.accent}
@@ -257,7 +299,7 @@ const PeakComponent: React.FC<{
           strokeOpacity="0.6"
           strokeDasharray="4 2"
         />
-        <circle cx={peak.x} cy={yBase - peak.height - 10} r="2" fill={labelData.accent} />
+        <circle cx={peak.x} cy={yBase - peak.height - connectorOffset} r={2 * labelScale} fill={labelData.accent} />
 
         {/* Label Card Group */}
         <g transform={`translate(${peak.x - cardWidth / 2}, ${cardYOffset})`}>
@@ -268,17 +310,17 @@ const PeakComponent: React.FC<{
             fill="white"
             fillOpacity="1"
             stroke={labelData.stroke}
-            strokeWidth="1"
+            strokeWidth={1 * labelScale}
             filter="url(#glow)"
           />
 
           <text
             x={cardWidth / 2}
-            y="18"
+            y={18 * labelScale}
             textAnchor="middle"
             dominantBaseline="middle"
             fill={labelData.color}
-            fontSize="14"
+            fontSize={fontSizeMain}
             fontWeight="700"
             fontFamily="Inter, sans-serif"
             letterSpacing="-0.01em"
@@ -288,12 +330,12 @@ const PeakComponent: React.FC<{
 
           <text
             x={cardWidth / 2}
-            y="32"
+            y={32 * labelScale}
             textAnchor="middle"
             dominantBaseline="middle"
             fill={labelData.color}
             fillOpacity="0.8"
-            fontSize="11"
+            fontSize={fontSizeSub}
             fontFamily="Inter, sans-serif"
             fontWeight="500"
           >

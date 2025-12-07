@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
               <FlaskConical className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              LCOracle.ai
+              LCOracle AI
             </span>
           </Link>
 

@@ -1,16 +1,16 @@
-# LCOracle.ai: The Modern LC-MS Analytics Platform
+# LCOracle AI: The Modern LC-MS Analytics Platform
 
-LCOracle.ai is a comprehensive, AI-powered web application designed to revolutionize Liquid Chromatography-Mass Spectrometry (LC-MS) workflows. By integrating state-of-the-art machine learning models with a sleek, modern user interface, LCOracle.ai empowers chemists to predict, optimize, and analyze LC-MS data with unprecedented ease.
+LCOracle AI is a comprehensive, AI-powered web application designed to revolutionize Liquid Chromatography-Mass Spectrometry (LC-MS) workflows. By integrating state-of-the-art machine learning models with a sleek, modern user interface, LCOracle AI empowers chemists to predict, optimize, and analyze LC-MS data with unprecedented ease.
 
 The platform unifies five powerful predictive modules: ASKCOS, AMAX, ReTiNA, PeakProphet, and Gradience, into a single, cohesive ecosystem for end-to-end method development and data analysis.
 
-Current Version: **1.0.2**
+Current Version: **1.0.3**
 
-![LCOracle.ai Screenshot](./frontend/src/assets/lcoracle.png)
+![LCOracle AI Screenshot](./frontend/src/assets/lcoracle.png)
 
 ## 🧿 Installation & Usage
 
-LCOracle.ai is containerized with Docker for easy deployment.
+LCOracle AI is containerized with Docker for easy deployment.
 
 ### Prerequisites
 - Docker Desktop

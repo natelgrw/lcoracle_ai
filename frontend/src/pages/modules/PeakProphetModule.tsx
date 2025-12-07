@@ -238,7 +238,7 @@ const PeakProphetModule: React.FC = () => {
         icon={peakProphetIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-16"
+        iconOffset="md:-mt-16"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -312,7 +312,7 @@ const PeakProphetModule: React.FC = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">LC-MS Raw Data (mzXML)</label>
                     <div className="flex items-center justify-center w-full">
-                      <label className={`flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${msFile ? 'border-purple-400 bg-purple-50' : 'border-gray-300 bg-white'}`}>
+                      <label className={`flex flex-col items-center justify-center w-full min-h-[6rem] h-auto p-4 text-center border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${msFile ? 'border-purple-400 bg-purple-50' : 'border-gray-300 bg-white'}`}>
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           {msFile ? (
                             <>
@@ -335,7 +335,7 @@ const PeakProphetModule: React.FC = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">UV-Vis Data (CSV)</label>
                     <div className="flex items-center justify-center w-full">
-                      <label className={`flex flex-col items-center justify-center w-full h-24 border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${uvFile ? 'border-purple-400 bg-purple-50' : 'border-gray-300 bg-white'}`}>
+                      <label className={`flex flex-col items-center justify-center w-full min-h-[6rem] h-auto p-4 text-center border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${uvFile ? 'border-purple-400 bg-purple-50' : 'border-gray-300 bg-white'}`}>
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           {uvFile ? (
                             <>

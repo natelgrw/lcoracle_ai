@@ -119,7 +119,7 @@ const AmaxModule: React.FC = () => {
         icon={amaxIcon}
         color="text-purple-600"
         gradient="bg-gradient-to-r from-purple-600 to-indigo-600"
-        iconOffset="-mt-16"
+        iconOffset="md:-mt-16"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -209,7 +209,7 @@ const AmaxModule: React.FC = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <label className="flex flex-col items-center justify-center w-full min-h-[6rem] h-auto p-4 text-center border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <Upload className="w-6 h-6 text-gray-400 mb-2" />
                         <p className="mb-1 text-sm text-gray-500"><span className="font-semibold">Click to upload CSV</span></p>

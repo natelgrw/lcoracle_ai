@@ -1,3 +1,11 @@
+Version: **1.0.3**
+
+Date Released: **12/06/2025**
+
+- Significant upgrade of web app UI/UX
+- Fixed formatting issues on tablet and mobile versions
+- Added gradients to module selection in landing page
+
 Version: **1.0.2**
 
 Date Released: **12/04/2025**

@@ -22,14 +22,14 @@ const ModuleHeader: React.FC<ModuleHeaderProps> = ({
   iconOffset = ""
 }) => {
   return (
-    <div className={`w-full pt-24 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden ${gradient || bg || 'bg-slate-900'} text-white shadow-lg`}>
+    <div className={`w-full pt-12 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden ${gradient || bg || 'bg-slate-900'} text-white shadow-lg`}>
       {/* Decorative Background Pattern */}
       <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] mix-blend-overlay"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <Link
           to="/"
-          className="inline-flex items-center text-xs font-medium text-white/80 hover:text-white mb-6 transition-colors hover:-translate-x-1 duration-200"
+          className="inline-flex items-center text-xs font-medium text-white/80 hover:text-white mb-10 transition-colors hover:-translate-x-1 duration-200"
         >
           <ChevronLeft className="w-3.5 h-3.5 mr-2" />
           Back to Dashboard

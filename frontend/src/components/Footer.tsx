@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
 
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-xl font-bold text-white mb-4">
-              LCOracle.ai
+              LCOracle AI
             </h3>
             <p className="text-slate-400 max-w-sm leading-relaxed">
               Integrating state-of-the-art machine learning models for LC-MS method development, product prediction, chemical property prediction, and gradient optimization.
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
             <p className="mt-6 text-xs text-slate-500">
-              v1.0.2 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
+              v1.0.3 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
             </p>
           </div>
         </div>
