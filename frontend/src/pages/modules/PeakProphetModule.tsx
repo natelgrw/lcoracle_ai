@@ -69,7 +69,7 @@ const DynamicTable = ({
               <button
                 type="button"
                 onClick={() => onRemove(idx)}
-                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                className="p-2 rounded-lg transition-all text-red-500 opacity-100 md:text-gray-400 md:opacity-0 md:group-hover:opacity-100 md:hover:text-red-500 md:hover:bg-red-50"
               >
                 <Trash2 size={16} />
               </button>

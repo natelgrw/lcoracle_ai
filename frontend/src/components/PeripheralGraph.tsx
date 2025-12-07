@@ -14,7 +14,6 @@ const PeripheralGraph: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const connectionDistance = 15;
-  const mouseRadius = 20;
   const edgeBuffer = 2;
 
   const colors = ['#3b82f6', '#ef4444', '#22c55e', '#eab308', '#a855f7', '#ec4899'];
@@ -26,8 +25,6 @@ const PeripheralGraph: React.FC = () => {
     if (!ctx) return;
 
     let nodes: Node[] = [];
-    let mouseX = -1000;
-    let mouseY = -1000;
     let animationFrameId: number;
 
     const initNodes = () => {
@@ -78,19 +75,6 @@ const PeripheralGraph: React.FC = () => {
       nodes.forEach(node => {
         node.x += node.vx;
         node.y += node.vy;
-
-        const mpX = (mouseX / canvas.width) * 100;
-        const mpY = (mouseY / canvas.height) * 100;
-        const dx = node.x - mpX;
-        const dy = node.y - mpY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < mouseRadius) {
-          // force of repulsion
-          const force = (mouseRadius - dist) / mouseRadius;
-          node.vx += (dx / dist) * force * 0.2;
-          node.vy += (dy / dist) * force * 0.2;
-        }
 
         const maxV = 0.1;
         if (node.vx > maxV) node.vx = maxV;
@@ -170,19 +154,12 @@ const PeripheralGraph: React.FC = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (window.innerWidth < 1024) return; // Disable interaction on mobile/tablet
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', resize);
+    resize();
     animate();
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
