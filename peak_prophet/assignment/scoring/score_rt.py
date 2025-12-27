@@ -2,7 +2,7 @@
 score_rt.py
 
 Author: natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/15/2025
 
 Retention time scoring utilities using relative order scoring
 and exponential scoring
@@ -30,15 +30,15 @@ def relative_order_rt_score(
     Parameters
     ----------
     rt_pred : float
-        Predicted retention time (in minutes)
+        Predicted retention time (in seconds)
     rt_obs : float
-        Observed retention time (in minutes)
+        Observed retention time (in seconds)
     all_predicted_rts : List[float]
         All predicted RTs (for computing relative position)
     all_observed_rts : List[float]
         All observed RTs (for computing relative position)
     method_length : Optional[float]
-        Total method length in minutes. If None, uses max of all RTs.
+        Total method length in seconds. If None, uses max of all RTs.
     max_score : float, default=1.0
         Maximum score value
     
@@ -89,7 +89,7 @@ def relative_order_rt_score(
     return float(0.7 * rank_score + 0.3 * position_score)
 
 
-def exponential_rt_score(rt_pred: float, rt_obs: float, sigma: float = 0.3, max_score: float = 1.0) -> float:
+def exponential_rt_score(rt_pred: float, rt_obs: float, sigma: float = 18.0, max_score: float = 1.0) -> float:
     """
     Exponential similarity on retention time difference (absolute scoring).
     
@@ -98,11 +98,11 @@ def exponential_rt_score(rt_pred: float, rt_obs: float, sigma: float = 0.3, max_
     Parameters
     ----------
     rt_pred : float
-        Predicted retention time (in minutes)
+        Predicted retention time (in seconds)
     rt_obs : float
-        Observed retention time (in minutes)
-    sigma : float, default=0.3
-        Scale parameter (typically model MAE in minutes)
+        Observed retention time (in seconds)
+    sigma : float, default=18.0
+        Scale parameter (typically model MAE in seconds)
     max_score : float, default=1.0
         Maximum score value
     

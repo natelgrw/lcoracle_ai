@@ -2,7 +2,7 @@
 LCMS_meas_man.py
 
 Author: @natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/15/2025
 
 LC-MS Measurement Manager: Stores peak information including apexes, boundaries, 
 local maxima, and MS spectra for each peak. Contains functions for easy data processing
@@ -148,10 +148,10 @@ class LCMSMeasMan:
             return
         
         # peak picking
-        height_threshold = np.percentile(selected_intensity_sorted, 27.5)
+        height_threshold = np.percentile(selected_intensity_sorted, 94)
         rt_spacing = np.median(np.diff(selected_rt_sorted))
         min_distance_points = max(1, int(0.2 / rt_spacing))
-        prominence_threshold = np.percentile(selected_intensity_sorted, 20) * 0.5
+        prominence_threshold = np.percentile(selected_intensity_sorted, 50)
         
         peaks, properties = find_peaks(selected_intensity_sorted, 
                                        height=height_threshold,
@@ -226,7 +226,7 @@ class LCMSMeasMan:
         
         valley_threshold = apex_intensity * 0.65
         
-        max_expansion_threshold = apex_intensity * 0.3
+        max_expansion_threshold = apex_intensity * 0.4
         
         rt_spacing = np.median(np.diff(rt_array))
         max_expansion_points = int(5.0 / rt_spacing)
@@ -266,7 +266,7 @@ class LCMSMeasMan:
                 # don't expand more than 3/120 * method length from apex
                 rt_at_start = rt_array[start_idx]
                 rt_at_apex = rt_array[apex_idx]
-                max_expansion = (3.0 / 120.0) * total_method_length
+                max_expansion = (1.5 / 120.0) * total_method_length
                 if rt_at_apex - rt_at_start > max_expansion:
                     target_rt = rt_at_apex - max_expansion
                     for i in range(apex_idx - 1, start_idx - 1, -1):
@@ -309,7 +309,7 @@ class LCMSMeasMan:
                 # don't expand more than 3/120 * method length from apex
                 rt_at_end = rt_array[end_idx]
                 rt_at_apex = rt_array[apex_idx]
-                max_expansion = (3.0 / 120.0) * total_method_length
+                max_expansion = (1.5 / 120.0) * total_method_length
                 if rt_at_end - rt_at_apex > max_expansion:
                     target_rt = rt_at_apex + max_expansion
                     for i in range(apex_idx + 1, end_idx + 1):
@@ -317,7 +317,7 @@ class LCMSMeasMan:
                             end_idx = i
                             break
         else:
-            for i in range(apex_idx + 1, min(len(intensity_array), apex_idx + max_expansion_points) + 1):
+            for i in range(apex_idx + 1, min(len(intensity_array), apex_idx + max_expansion_points + 1)):
                 if intensity_array[i] < max_expansion_threshold:
                     end_idx = i - 1
                     break
@@ -351,12 +351,12 @@ class LCMSMeasMan:
             end_idx = next_peak - 1
         
         # ensure minimum peak width: 3/120 (2.5%) of total method length
-        min_width_rt = (3.0 / 120.0) * total_method_length
+        min_width_rt = (1.0 / 120.0) * total_method_length
         rt_spacing = np.median(np.diff(rt_array))
         min_width_rt = max(min_width_rt, rt_spacing * 2)
         peak_width = rt_array[end_idx] - rt_array[start_idx]
         
-        close_spacing_threshold = (16.0 / 120.0) * total_method_length
+        close_spacing_threshold = (2.0 / 120.0) * total_method_length
         is_closely_spaced = False
         if prev_peak is not None:
             spacing_to_prev = rt_array[apex_idx] - rt_array[prev_peak]

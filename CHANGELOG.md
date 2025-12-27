@@ -1,3 +1,10 @@
+Version: **1.0.4**
+
+Date Released: **12/27/2025**
+
+- PeakProphet v1.0.2 integration
+- Support for optional UV-Vis LabSolution .csv input
+
 Version: **1.0.3**
 
 Date Released: **12/06/2025**

@@ -3,7 +3,7 @@
 calc_compound.py
 
 Author: natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/10/2025
 
 This module provides a function to calculate 156 molecular 
 descriptors for a target molecule for model property prediction.

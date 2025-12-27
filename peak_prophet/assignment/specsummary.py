@@ -2,7 +2,7 @@
 specsummary.py
 
 Author: natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/15/2025
 
 Generates SpecSummary JSON files from ChemicalReaction and measurement manager objects.
 Uses score_aggregate.py to score all peaks and assign compounds.
@@ -26,7 +26,7 @@ def peak_prophesize(
     meas_man: Union[LCMSMeasMan, LCMSUVMeasMan],
     output_file: Optional[str] = None,
     weights: Dict[str, float] = {"rt": 0.2, "uv": 0.2, "ms": 0.4, "prior": 0.2},
-    rt_sigma: float = 0.3,
+    rt_sigma: float = 18.0,
     lmax_sigma: float = 5.0,
     ms_ppm: float = 5.0,
     use_relative_rt: bool = True,
@@ -49,8 +49,8 @@ def peak_prophesize(
         Path to output JSON file. If None, returns dict without saving.
     weights : Optional[Dict[str, float]]
         Weights for scoring components. Default: {"rt": 0.2, "uv": 0.2, "ms": 0.4, "prior": 0.2}
-    rt_sigma : float, default=0.3
-        sigma_rt for absolute RT scoring (minutes)
+    rt_sigma : float, default=18.0
+        sigma_rt for absolute RT scoring (seconds)
     lmax_sigma : float, default=5.0
         sigma_uv for UV scoring (nm)
     ms_ppm : float, default=5.0
@@ -128,7 +128,8 @@ def peak_prophesize(
         local_maxima_rt = peak_data.get('local_maxima_rt', [])
         if local_maxima_rt:
             # only include if there are actual local maxima (not just the apex)
-            relative_maxima = [float(rt - start_rt) for rt in local_maxima_rt]
+            # relative_maxima stores Absolute Retention Time (X-coordinates)
+            relative_maxima = [float(rt) for rt in local_maxima_rt]
         
         assigned_cand_idx = assignment.get(peak_idx)
         optimal_compound = None

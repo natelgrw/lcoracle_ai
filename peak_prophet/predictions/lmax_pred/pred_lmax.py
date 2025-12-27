@@ -3,7 +3,7 @@
 pred_lmax.py
 
 Author: natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/10/2025
 
 This script contains functions to predict UV-Vis absorption maximuma values 
 for molecules using AMAX_XGB1. It uses calculate_156_descriptors for both

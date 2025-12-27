@@ -2,7 +2,7 @@
 LCMSUV_meas_man.py
 
 Author: @natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/15/2025
 
 LC-MS/UV-Vis Measurement Manager: Combines LC-MS and UV-Vis data to provide
 comprehensive peak information including MS spectra and lambda max values.
@@ -63,7 +63,7 @@ class LCMSUVMeasMan:
                  concentration_relax: bool = False,
                  max_num_peaks: int = 50,
                  contraction_algo: Literal['mean', 'max', 'weighted_mean'] = 'mean',
-                 min_h: float = 8.5,
+                 min_h: float = 1.0,
                  min_time: float | None = None,
                  max_time: float | None = None,
                  wavelength: Tuple[int, int] | None = None,
@@ -365,8 +365,8 @@ class LCMSUVMeasMan:
         # use 60% drop threshold
         valley_threshold = apex_intensity * 0.65
         
-        # don't expand beyond where intensity drops to 30% of apex
-        max_expansion_threshold = apex_intensity * 0.3
+        # don't expand beyond where intensity drops to 40% of apex
+        max_expansion_threshold = apex_intensity * 0.4
         
         # limit expansion to reasonable distance from apex
         rt_spacing = np.median(np.diff(rt_array))
@@ -393,25 +393,9 @@ class LCMSUVMeasMan:
         # peak spacing determination
         if prev_peak is not None:
             peak_spacing = rt_array[apex_idx] - rt_array[prev_peak]
-            
-            if next_peak is not None:
-                peak_spacing_next = rt_array[next_peak] - rt_array[apex_idx]
-            else:
-                peak_spacing_next = float('inf')
 
-            close_threshold = (16.0 / 120.0) * total_method_length
-            moderate_threshold = (32.0 / 120.0) * total_method_length
-            
-            if peak_spacing < close_threshold:
-                max_expansion = (10.0 / 120.0) * total_method_length
-            elif peak_spacing < moderate_threshold:
-                max_expansion = (16.0 / 120.0) * total_method_length
-            elif peak_spacing_next < close_threshold:
-                max_expansion = (10.0 / 120.0) * total_method_length
-            elif peak_spacing_next < moderate_threshold:
-                max_expansion = (16.0 / 120.0) * total_method_length
-            else:
-                max_expansion = (1.5 / 120.0) * total_method_length
+            # strict expansion limit
+            max_expansion = (1.5 / 120.0) * total_method_length
             
             # limit search range to max_expansion from apex
             rt_at_apex = rt_array[apex_idx]
@@ -493,25 +477,9 @@ class LCMSUVMeasMan:
         
         if next_peak is not None:
             peak_spacing = rt_array[next_peak] - rt_array[apex_idx]
-            
-            if prev_peak is not None:
-                peak_spacing_prev = rt_array[apex_idx] - rt_array[prev_peak]
-            else:
-                peak_spacing_prev = float('inf')
-            
-            close_threshold = (16.0 / 120.0) * total_method_length
-            moderate_threshold = (32.0 / 120.0) * total_method_length
-            
-            if peak_spacing < close_threshold:
-                max_expansion = (10.0 / 120.0) * total_method_length
-            elif peak_spacing < moderate_threshold:
-                max_expansion = (16.0 / 120.0) * total_method_length
-            elif peak_spacing_prev < close_threshold:
-                max_expansion = (10.0 / 120.0) * total_method_length
-            elif peak_spacing_prev < moderate_threshold:
-                max_expansion = (16.0 / 120.0) * total_method_length
-            else:
-                max_expansion = (1.5 / 120.0) * total_method_length
+
+            # strict expansion limit
+            max_expansion = (1.5 / 120.0) * total_method_length
             
             # limit search range to max_expansion from apex
             rt_at_apex = rt_array[apex_idx]
@@ -605,12 +573,12 @@ class LCMSUVMeasMan:
             end_idx = next_peak - 1
         
 
-        min_width_rt = (3.0 / 120.0) * total_method_length
+        min_width_rt = (1.0 / 120.0) * total_method_length
         rt_spacing = np.median(np.diff(rt_array))
         min_width_rt = max(min_width_rt, rt_spacing * 2)
         peak_width = rt_array[end_idx] - rt_array[start_idx]
 
-        close_spacing_threshold = (16.0 / 120.0) * total_method_length
+        close_spacing_threshold = (2.0 / 120.0) * total_method_length
         is_closely_spaced = False
         if prev_peak is not None:
             spacing_to_prev = rt_array[apex_idx] - rt_array[prev_peak]

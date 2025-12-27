@@ -2,7 +2,7 @@
 score_aggregate.py
 
 Author: natelgrw
-Last Edited: 12/04/2025
+Last Edited: 11/15/2025
 
 Aggregate scoring utilities. Uses relative order scoring for RT, 
 exponential scoring for UV and MS, and prior probability from ASKCOS.
@@ -44,7 +44,7 @@ def score_peak_candidate(
     all_observed_rts: Optional[List[float]] = None,
     method_length: Optional[float] = None,
     weights: Optional[Dict[str, float]] = None,
-    rt_sigma: float = 0.3,
+    rt_sigma: float = 18.0,
     lmax_sigma: float = 5.0,
     ms_ppm: float = 5.0,
     use_relative_rt: bool = True,
@@ -57,13 +57,13 @@ def score_peak_candidate(
     Parameters
     ----------
     peak_rt : float
-        Observed retention time (minutes)
+        Observed retention time (seconds)
     peak_mz : List[float]
         Observed m/z values
     peak_lmax : Optional[float]
         Observed lambda max (nm) or None
     candidate_rt : Optional[float]
-        Predicted retention time (minutes) or None
+        Predicted retention time (seconds) or None
     candidate_ms_values : Optional[Dict[str, Tuple[float, float]]]
         Predicted adduct masses {adduct_name: (mass, prob)} or None
     candidate_lmax : Optional[float]
@@ -75,11 +75,11 @@ def score_peak_candidate(
     all_observed_rts : Optional[List[float]]
         All observed RTs for relative order scoring
     method_length : Optional[float]
-        Total method length (minutes) for relative RT scoring
+        Total method length (seconds) for relative RT scoring
     weights : Optional[Dict[str, float]]
         Weights for each component.
-    rt_sigma : float, default=0.3
-        sigma_rt for absolute RT scoring (minutes)
+    rt_sigma : float, default=18.0
+        sigma_rt for absolute RT scoring (seconds)
     lmax_sigma : float, default=5.0
         sigma_uv for UV scoring (nm)
     ms_ppm : float, default=5.0
@@ -137,7 +137,7 @@ def rank_candidates_for_peak(
     peak_rt: float,
     top_k: int = 5,
     weights: Optional[Dict[str, float]] = None,
-    rt_sigma: float = 0.3,
+    rt_sigma: float = 18.0,
     lmax_sigma: float = 5.0,
     ms_ppm: float = 5.0,
     use_relative_rt: bool = True,
@@ -152,13 +152,13 @@ def rank_candidates_for_peak(
     meas_man : LCMSMeasMan or LCMSUVMeasMan
         Measurement manager with detected peaks
     peak_rt : float
-        Apex retention time of the peak to score (minutes)
+        Apex retention time of the peak to score (seconds)
     top_k : int, default=5
         Number of top candidates to return
     weights : Optional[Dict[str, float]]
         Weights for scoring components
-    rt_sigma : float, default=0.3
-        sigma_rt for absolute RT scoring (minutes)
+    rt_sigma : float, default=18.0
+        sigma_rt for absolute RT scoring (seconds)
     lmax_sigma : float, default=5.0
         sigma_uv for UV scoring (nm)
     ms_ppm : float, default=5.0
@@ -184,30 +184,31 @@ def rank_candidates_for_peak(
         return []
         
     # extract all RTs for relative order scoring
-    # Products have RT in seconds, convert to minutes
-    all_predicted_rts = [p.get_retention_time() / 60.0 if p.get_retention_time() else None 
+    # Products have RT in seconds
+    all_predicted_rts = [p.get_retention_time() if p.get_retention_time() else None 
                          for p in products]
-    # Peak RTs are in seconds (from mocca2), convert to minutes for scoring
-    all_observed_rts = [rt / 60.0 for rt in meas_man.peaks.keys()] if use_relative_rt else None
+    # Peak RTs are in seconds (from mocca2)
+    all_observed_rts = list(meas_man.peaks.keys()) if use_relative_rt else None
     
     # get method length
     method_length = None
     if reaction.lcms_gradient:
-        method_length = max(t for t, _ in reaction.lcms_gradient)
+        # gradient time is in minutes, convert to seconds
+        method_length = max(t for t, _ in reaction.lcms_gradient) * 60.0
     
-    # Convert peak_rt from seconds to minutes for scoring
-    peak_rt_minutes = peak_rt / 60.0
+    # Peak RT is already in seconds
+    peak_rt_seconds = peak_rt
     
     # score each candidate
     scored = []
     for product in products:
-        candidate_rt = product.get_retention_time() / 60.0 if product.get_retention_time() else None  # Convert to minutes
+        candidate_rt = product.get_retention_time() if product.get_retention_time() else None
         candidate_ms = product.get_ms_values()
         candidate_lmax = product.get_lambda_max()
         candidate_prior = product.get_probability()
         
         score = score_peak_candidate(
-            peak_rt=peak_rt_minutes,
+            peak_rt=peak_rt_seconds,
             peak_mz=peak_mz,
             peak_lmax=peak_lmax,
             candidate_rt=candidate_rt,
@@ -245,7 +246,7 @@ def score_all_peaks(
     reaction: ChemicalReaction,
     meas_man: Union[LCMSMeasMan, LCMSUVMeasMan],
     weights: Optional[Dict[str, float]] = None,
-    rt_sigma: float = 0.3,
+    rt_sigma: float = 18.0,
     lmax_sigma: float = 5.0,
     ms_ppm: float = 5.0,
     use_relative_rt: bool = True,
@@ -261,8 +262,8 @@ def score_all_peaks(
         Measurement manager with detected peaks
     weights : Optional[Dict[str, float]]
         Weights for scoring components
-    rt_sigma : float, default=0.3
-        sigma_rt for absolute RT scoring (minutes)
+    rt_sigma : float, default=18.0
+        sigma_rt for absolute RT scoring (seconds)
     lmax_sigma : float, default=5.0
         sigma_uv for UV scoring (nm)
     ms_ppm : float, default=5.0
@@ -282,22 +283,23 @@ def score_all_peaks(
         return np.zeros((len(products), len(peak_rts)))
     
     # Extract all RTs for relative order scoring
-    # Products have RT in seconds, convert to minutes
-    all_predicted_rts = [p.get_retention_time() / 60.0 if p.get_retention_time() else None 
+    # Products have RT in seconds
+    all_predicted_rts = [p.get_retention_time() if p.get_retention_time() else None 
                          for p in products]
-    # Peak RTs are in seconds (from mocca2), convert to minutes for scoring
-    all_observed_rts = [rt / 60.0 for rt in peak_rts] if use_relative_rt else None
+    # Peak RTs are in seconds (from mocca2)
+    all_observed_rts = list(peak_rts) if use_relative_rt else None
     
-    # Get method length
+    # Get method length (convert minutes to seconds)
     method_length = None
     if reaction.lcms_gradient:
-        method_length = max(t for t, _ in reaction.lcms_gradient)
+        # gradient time is in minutes, convert to seconds
+        method_length = max(t for t, _ in reaction.lcms_gradient) * 60.0
     
     # Build score matrix
     score_matrix = np.zeros((len(products), len(peak_rts)))
     
     for i, product in enumerate(products):
-        candidate_rt = product.get_retention_time() / 60.0 if product.get_retention_time() else None
+        candidate_rt = product.get_retention_time() if product.get_retention_time() else None
         candidate_ms = product.get_ms_values()
         candidate_lmax = product.get_lambda_max()
         candidate_prior = product.get_probability()
@@ -307,11 +309,11 @@ def score_all_peaks(
             peak_mz = [mz for mz, _ in peak_data.get('ms_spectrum', [])]
             peak_lmax = peak_data.get('lambda_max')  # None for LCMSMeasMan, float for LCMSUVMeasMan
             
-            # Convert peak_rt from seconds to minutes for scoring
-            peak_rt_minutes = peak_rt / 60.0
+            # Peak RT is already in seconds
+            peak_rt_seconds = peak_rt
             
             score = score_peak_candidate(
-                peak_rt=peak_rt_minutes,
+                peak_rt=peak_rt_seconds,
                 peak_mz=peak_mz,
                 peak_lmax=peak_lmax,
                 candidate_rt=candidate_rt,

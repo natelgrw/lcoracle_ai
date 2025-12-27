@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Github, Mail } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -19,11 +20,11 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-white mb-4 tracking-wide uppercase text-sm">Modules</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><a href="/askcos" className="hover:text-white transition-colors">AskCOS</a></li>
-              <li><a href="/amax" className="hover:text-white transition-colors">AMAX</a></li>
-              <li><a href="/retina" className="hover:text-white transition-colors">ReTiNA</a></li>
-              <li><a href="/peak-prophet" className="hover:text-white transition-colors">PeakProphet</a></li>
-              <li><a href="/gradience" className="hover:text-white transition-colors">Gradience</a></li>
+              <li><Link to="/askcos" className="hover:text-white transition-colors">ASKCOS</Link></li>
+              <li><Link to="/amax" className="hover:text-white transition-colors">AMAX</Link></li>
+              <li><Link to="/retina" className="hover:text-white transition-colors">ReTiNA</Link></li>
+              <li><Link to="/peak-prophet" className="hover:text-white transition-colors">PeakProphet</Link></li>
+              <li><Link to="/gradience" className="hover:text-white transition-colors">Gradience</Link></li>
             </ul>
           </div>
 
@@ -38,7 +39,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
             <p className="mt-6 text-xs text-slate-500">
-              v1.0.3 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
+              v1.0.4 <br /><br /> Developed in collaboration with the Coley Research Group @ MIT
             </p>
           </div>
         </div>

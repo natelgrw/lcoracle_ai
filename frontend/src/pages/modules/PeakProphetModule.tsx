@@ -163,10 +163,7 @@ const PeakProphetModule: React.FC = () => {
       alert('LC-MS data file is required');
       return;
     }
-    if (!uvFile) {
-      alert('UV-Vis data file is required');
-      return;
-    }
+
 
     setLoading(true);
 
@@ -333,7 +330,7 @@ const PeakProphetModule: React.FC = () => {
 
                   {/* UV-Vis Upload */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">UV-Vis Data (CSV)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">UV-Vis Data (CSV) (Optional)</label>
                     <div className="flex items-center justify-center w-full">
                       <label className={`flex flex-col items-center justify-center w-full min-h-[6rem] h-auto p-4 text-center border-2 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${uvFile ? 'border-purple-400 bg-purple-50' : 'border-gray-300 bg-white'}`}>
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
