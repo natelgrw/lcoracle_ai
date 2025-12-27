@@ -93,7 +93,7 @@ Documentation for ReTiNA models can be found [here](https://github.com/natelgrw/
 
 PeakProphet uses product prediction, property prediction, smart scoring, and optimal assignment algorithms to streamline compound identification by mapping detected LC-MS peaks to likely reaction products.
 
-Version Used: **1.0.1**
+Version Used: **1.0.2**
 
 ```
 @software{peakprophet,
